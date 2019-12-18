@@ -138,9 +138,17 @@
 
               
               <h2 id="Software_Design" class="checkpoint">Software Design</h2>
-              <h3>Computer Vision</h3>
-              <p> The first task of this system was to take an image of the waste field and identify the bottles on the field. We assembled a wooden post/framework and attached a Pi camera on it so that the camera was directly above the field. The camera was attached to a Raspberry Pi, and the Pi sat above the post. In the beginning, the camera took an image of the field and stored this image inside the Pi’s file system. We wrote a C++ program that used OpenCV to detect any red circles in the image. The OpenCV part of our program was referenced and modified from the blog Solarian Programmer (reference 2). This program first converted the image from RGB color space to HSV space so that it can easily select a single color based on its hue. Then OpenCV threshold the image and only kept the pixels that were red from both the lower (0-10) and upper (160-179) HSV hue range. The resulting images that contain only the red pixels were then combined and blurred. Next the program performed a Hough transform using the OpenCV HoughCircles function to detect the circles. All circles were then stored in a vector as objects with center and size so we could easily locate them. </p>
-              <p> We tested this program multiple times and it almost always worked as expected. The only mistake that the program made was that sometimes it recognized very small circles around the bottle neck. This happened rarely, and the amount of additional circles was not large. When this happened, the arm would try to grab at the same spot multiple times. We thought this was tolerable. However, the program performed very poorly when there were interferences, such as when the lighting was dim or when there were interferences in the field, especially other red objects, the program behaved very poorly. It could recognize up to hundreds of additional noises and the arm would get out of control, trying to grab non-existent objects. </p>
+              <p> The entire software design consisted of four threads. The overall purpose of each of these components is as follows: </[>
+              <p> Timer thread: draw the user interface on TFT screen and keep updating status of system at fixed 10 fps </p>
+              <p> Command thread: preset what the system needs to do (set the status of motors: which motor and the direction of rotation of that motor) given different commands and keep checking what command has been given </p>
+              <p> Key thread: Keep checking which key has been pressed and released and give the corresponding command  </p>
+              <p> Motor thread: Keep checking the status of motors, which is set in the command thread, and make the motors run according to the status</p>
+            
+              <h3>Stepper Motor Control</h3>
+              <p> There are two kinds of stepper motor in our project. Since they use different kinds of stepper motor driver, the codes to drive them are different. </p>
+              <p> For the stepper motors using ULN2003 driver board, we need to directly send pulse wave to the four phases of the motor. The code is shown below. </p>
+            
+            
               <figure>
                 <div class="columns">
                   <div class="column">
