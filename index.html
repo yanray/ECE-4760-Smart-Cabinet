@@ -52,13 +52,13 @@
             <aside class="menu" id="menu">
               <ul class="menu-list">
                 <li>
-                  <a href="#Introduction" id="link_Introduction" class="is-active">Objective</a>
+                  <a href="#Introduction" id="link_Introduction" class="is-active">Introduction</a>
                 </li>
                 <li>
                   <a href="#Background" id="link_Background" >Background</a>
                 </li>
                 <li>
-                  <a href="#11" id="link_11" >Introduction</a>
+                  <a href="#High Level Design" id="link_11" >High Level Design</a>
                 </li>
                 <li>
                 <li>
@@ -100,16 +100,14 @@
               <h1 id="Background" class="checkpoint">Project Background</h1>
               <p>Our idea of final projet derived from a real problem in the world. It's very crowded in the big cities like New York City. When you drive in New York City, it's very crowded and very difficult to find an available parking space. How to solve this problem?   </p>
               <p>If we're able to design and build an intelligent parking lot underground, drivers only need to drive in specified location and check in. The vehicle would be automatically stored underground. When drivers are back, they only need to check out before they go, the vehicle would be shown up on the ground. Then all the problems are addressed. </p>
-              <p>Based on this idea, we designed and built a Smart Cabinet to store and grab toy vehicles to mimic the intelligent parking lot as we imagined </p>
+              <p>Based on this idea, we designed and built a Smart Cabinet to store and grab toy vehicles to mimic the intelligent parking lot as we imagined. </p>
               
-              <h1 id="11" class="checkpoint">11</h1>
-              <p>For this project, we created a model waste field on a wood board. The field contained two types of waste: recyclable and non-recyclable. To simplify the work, we limited the types of waste on this field. The recyclable wastes were represented by empty plastic milk bottles with red caps, and the non-recyclable wastes were represented by hollow white blocks. The robotic arm was set in front of the platform, and a Raspberry Pi camera was set at the top of the platform on a post. An arduino was attached on back of the post. A recycle bin was set on the left side of the platform. </p>
-              <p>When the system first started, the Raspberry Pi camera captured an image of the field. Then the system checked if there were recyclable bottles in the field by identifying red circles on the image with a OpenCV program. If there was one or more bottles, the program would calculate the center of the red caps. Then those values in pixels were converted to values in meters. Another program read the location values and converted them to sets of angles using inverse kinematics. Each set contained six angles since there were six servos on the arm. Then the Raspberry Pi would send those angles one by one to an arduino that controlled the arm through USB serial port. Next the arduino send the angle movements to the servos on the arm through serial port. The arm would then perform a series of movements that allowed it to grab the bottles at the target locations and put them inside the recycle bin. After all bottles were cleared, the arduino would send a ‘done’ message to the Raspberry Pi, and the Pi would take another image of the field. The whole process described above is then repeated.  </p>
-              <figure>
-                <img src="img/platform.jpg" alt="RecycleBot and the model workspace" width="450" height="450">
-                <figcaption>Figure 1: RecycleBot and the model workspace. </figcaption>
-                </figure>
-              <p><strong>Figure1 Note:  </strong>This image shows the final and complete system of this project.  </p>
+              <h1 id="High Level Design" class="checkpoint">High Level Design</h1>
+              <p>The intuition of our project comes from the idea of automatic parking garage. 
+                People just need to park their car at the gate of the garage and the car will be automatically transferred to an empty slot. 
+                Therefore, for the final project, we just built a prototype of automatic storage tower. We can just put one small item at a specific place on the platform, press one single button, and the system will store the item automatically in a cell. 
+                After the tower successfully stores an item, it will give a code on the TFT screen, which you need to remember. 
+                If you want to take the item from the tower, you need to type the code and the system will automatically take the item out for you. </p>
 
               <h1 id="Design" class="checkpoint">Design</h1>
               <p> </p>
