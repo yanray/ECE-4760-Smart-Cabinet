@@ -128,7 +128,7 @@
                 <img src="img/front_side.png" alt="" width="400" height="400">
                 <figcaption>Figure 4: Front Side of Smart Cabinet. </figcaption>
               </figure>
-              <p><strong>Figure4 Note:  </strong> The middle two holes are to be attached with two different motors in each cell structure. The right and left side structure are used to be attached with two rods. </p>
+              <p><strong>Figure4 Note:  </strong> The middle two sigle holes are to be attached with two different motors in each cell structure. The right and left side structure are used to be attached with two rods. </p>
       
               <figure>
                 <img src="img/woodcut.PNG" alt="" width="400" height="400">
@@ -147,7 +147,17 @@
               <h3>Stepper Motor Control</h3>
               <p> There are two kinds of stepper motor in our project. Since they use different kinds of stepper motor driver, the codes to drive them are different. </p>
               <p> For the stepper motors using ULN2003 driver board, we need to directly send pulse wave to the four phases of the motor. The code is shown below. </p>
-            
+              <div class="center">
+                <p><b>Note: </b>                 writePE(GPIOZ, 0x01);
+                            PT_YIELD_TIME_msec(2);
+                            writePE(GPIOZ, 0x02);
+                            PT_YIELD_TIME_msec(2);
+                            writePE(GPIOZ, 0x04);
+                            PT_YIELD_TIME_msec(2);
+                            writePE(GPIOZ, 0x08);
+                            PT_YIELD_TIME_msec(2);</p>
+              </div>   
+
             
               <figure>
                 <div class="columns">
