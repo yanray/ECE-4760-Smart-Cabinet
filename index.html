@@ -231,58 +231,23 @@
                             </p>
               </div>   
             
-              <p> Using this code, we set the current active motor to Motor 3, and set its status to move in. Since the motor thread keeps checking Motor_Num and Motor_Status, it would start to run the corresponding code.  </p>
-              <p> The for-loop is used to control how long we want the motor to run. Because we set the Motor_Num and Motor_Status to IDLE, the motor would directly stop after the for-loop. In this case, Motor 3 would begin to move in, which means the platform would go down, for 26 seconds.  </p>
-              <p> Using open loop control, we can just try different loop numbers to make the platform or the frames to stop at certain positions. Since our system is very rigid and stable, open loop control is enough to make it function properly. </p>
-            
               <h3>Button Control</h3>
               <p> We designed five buttons for 'storing', 'picking up' and 'input' purpose. </p>
               <p> When 'storing' button is pressed, the system would check whether there is an empty cell. If not, it wil display 'Sorry, it's full' on the TFE screen. If there is an empty cell, the system would store the toy cars inside it and generate a random 3-digit code for picking up purpose in the future</p>
               <p> When 'grabbing' button is pressed, the user uses left and right button to select right number in each units and press 'Enter' button, once 3-digit number matches with the 'picking up 'code in the system, the toy cars would be taken out automatically.</p>
             
-              <figure>
-                <img src="img/DH_matrix.jpg" alt="DH_matrix" width="450" height="450">
-                <figcaption>Figure 7: DH_matrix. </figcaption>
-              </figure>
-              <p><strong>Figure7 Note:  </strong>On the left, we build different frames on each servo. On the right, we list four parameters for frame change. This aims to compute Forward Kinematics. </p>
-              
-              <p> The second task of this system was to convert the target location in meters to servo rotating degrees in angles. We used Inverse Kinematics to achieve this task. Before we dive into Inverse Kinematics, we should briefly introduce Forward Kinematics. Suppose we know the rotating angles of our 6 servos, we could build a reference frame for every servo. Forward Kinematics is to build a position relationship of base attached servo with end-effector, also known as a gripper. The basic method for Inverse Kinematics is initializing a rotating angle for each servo and then use Forward Kinematics to compute the current target position. We compare current target position and goal position to output an error. Then Velocity Kinematics aims to calculate the updated rotating angles (you could image Velocity Kinematics as gradient since we want to minimize error). Then in the iteration, we minimize error to a threshold and output rotating angles for each servo. </p>
-              <p> We used open-loop control which meant the arm would reach the target with a single calculation. Although this was not as accurate as close-loop control, it was faster. Considering that both image recognition and serial communication were slow, we chose open-loop control. The test result showed that this method was fairly good in terms of speed and accuracy. On the simple model platform that we build, our robot could successfully recognize and pick up bottles over 95% of the time unless the bottle is out of the arm’s reach. Additionally, we used Forward Kinematics to test the accuracy of Inverse Kinematics, and the results were satisfactory. </p>
-              <h3>Communication between Raspberry Pi 3 and Arduino </h3>
-              <p> We used Serial Port to make Raspberry Pi 3 communicate to arduino. There were six values to be sent for each target location, one angle for each servo. Because the arduino had only one serial port, and it needed to communicate to both the RPi3 and the servos, we set up a new hardware serial on pin 10. To ensure everything was sent successfully and in order, we set up a simple protocol for the RPi3 and arduino to communicate back and forth. The arduino first send a ‘ready’ message to RPi3. Then RPi3 send the first value, and arduino had to confirm that it received this message by sending this value back to RPi3. When all six values were sent, arduino would sent a ‘done’ to RPi3. If there were more red bottles on the work space, RPi3 would be ready to send the next location. Otherwise, RPi3 python program would exit and the camera would take a new image of the platform to be processed. </p>
-              <h3>Control 6 servos by Arduino </h3>
-              <p> We used Software Serial Port on Arduino to control the 6 different servos. The basic rule was to restrict the rotating limits for every servo first. The rotation range was between 0 ~ 240 degrees. The minimum increment or accuracy for each servo was 0.24 radian. Each servo had a unique ID number and we could identify them by this number. In addition, we could control their rotating duration and rotating position. In the Arduino code, we pre-defined several functions like move_to_initial(), move_to() and move_to_bin(). They represent move to the vertical initial position, move to target location based on input arguments and move to bin location, respectively. During the testing, we did not face any problem with serial communication or servo control. </p>
-              
               <h1 id="Results" class="checkpoint">Results</h1>
-              <p>We reached our basic goals, and every subsystem performed well as expected. Our computer vision program recognized the red caps on the bottle with good accuracy. The coordinate conversion, although very simple, also performed very well within certain ranges of distances. Finally, our Inverse Kinematics algorithm was sturdy and very rarely failed unless the bottles were placed in unreachable places. The overall accuracy was over 95%. The bash script we wrote realized the whole process in a single command. In general, the whole process was very smooth, and we were very satisfied with the end product. </p>
-              <p> Our minimum demo goal was to have the robotic arm touch the bottle. We achieved this goal and beyond. Our final system was able to grab the bottle and put it aside with a good success rate.</p>
-               <figure>
-                <div class="columns">
-                  <div class="column">
-                    <img src="img/grip1.jpg" alt="RecycleBot finding a bottle and putting it inside the recycle bin1">
-                  </div>
-                  <div class="column">
-                    <img src="img/grip2.jpg" alt="RecycleBot finding a bottle and putting it inside the recycle bin2">
-                  </div>
-                </div>
-                <figcaption>Figure 8: RecycleBot finding a bottle and putting it inside the recycle bin. </figcaption>
-               </figure>
-               <p><strong>Figure8 Note:  </strong>Those two image demonstrate how RecycleBot successfully identifies a bottle, grabs it at the target location, and puts it inside the recycle bin.</p>
-              
               
               <h1 id="Conclusion" class="checkpoint">Conclusion</h1>
-              <p>The test results that our system achieved were fairly good in terms of speed and accuracy. On the simple model platform that we build, our robot could successfully recognize and pick up bottles over 95% of the time. There were some situations when the robot performed poorly, such as when the light was dim and when there were other red objects on the platform. One thing we discovered is that it is impossible for the robot to be accurate 100% of the time. During the entire process, there were many places that could be heavily affected by noises and uncertainties, such as the image recognition stage, the inverse kinematic calculation, and so on. </p>
-
+              <p> Currently, the smart cabinet is using open loop control without sensor. However, we found that the motors might sometimes stuck at some place. This would endanger the whole systems, since open loop control requires that the motors run properly all the time.  </p>
+            
               <h1 id="Future_Work" class="checkpoint">Future Work</h1>
-              <p> Our project has tremendous potential and many more additional features to be realized. There are two major directions of possible improvements. One is to make the model more realistic. This can be achieved by adding a more complete set of trash to our field space. Another direction is to make the system more accurate. This can be achieved by changing the control from open-loop to close-loop. </p>
-              <p> In this project, we used milk bottles to represent recyclable wastes and white blocks to represent everything else. We also set our target position height to be constant, so the robot can only grab bottles that are standing up straight. To make this model more realistic, we can use a more complex machine learning program to recognize all types of recyclable wastes, such as other types of bottles, plastic bags, or even paper boxes. We also need the system to recognize those wastes in all directions, instead of just from the top view. To achieve this, we need to add more than one camera to also detect object’s height. </p>
-              <p> With a more complex set of objects to grab, open-loop control will not be accurate enough. We need to change the picking up angles depending on the current location of end-effector and target location, orientation and shape. This change will be very complicated, corresponding solutions will be based on issues and how current industrial and research are handing them.  </p>
-              <p> One more idea is proposed by Professor Joseph Skovira, we could change our fixed workspace to a conveyor belt. Robotic arm would pick up recyclable wastes sequencely. To realize this change, we need to make our system a real timed system. Computation complex and system working speed should be considered and improved.  </p>
-              
+              <p> For further improvement, we would consider adding ultrasonic sensor to switch from open loop control to close loop control, which will make the system much more stable and safer. The ultrasonic sensor will be used to make sure that the platform and the boxes move to certain place, or even add a PID controller to it. </p>
+            
               <h1 id="work_distribution" class="checkpoint">Work Distribution</h1>
-              <p> Team work: testing, final report </p>
-              <p> Yanrui Wang: mechanical assembly, Inverse Kinematics, arm control</p>
-              <p> Yazhi Fan: OpenCV, coordinate conversion, serial communication </p>
+              <p> Team work: hardware design, software design, final report </p>
+              <p> Yanrui Wang: laser cut for acylic, button control, circuit design</p>
+              <p> Mengde Wu: 3D print, wood box design, stepper motor control, open loop control </p>
               
               <h1 id="project_parts" class="checkpoint">Project Parts</h1>
               <table>
