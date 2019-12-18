@@ -214,15 +214,31 @@
                             PT_YIELD_TIME_msec(5); <br> 
                             clearBits(GPIOY, 0x02); <br> 
                             PT_YIELD_TIME_msec(5); <br> 
-
                             </p>
               </div>   
             
             
-              <h3>Coordinate Conversion</h3>
-              <p> The circles’ location calculated by OpenCV were in units of pixels, so we had to convert them to actual distances in meters. There were many ways to do this, such as external packages. Since our platform was not flat and the image was not a perfect projection of the actual platform, we thought the best way was to take some sample points and measure the backward projection. So we first found out the maximum range that the arm could reach, which was 0.15 m to -0.15 m in y (horizontal) direction and 0 m to 0.3 m in x (vertical) direction. Then we moved the arm to the two diagonal corners and placed the bottles in the place where the arm could grab. Next we took an image of the field and calculated the pixel position of the bottle’s center. Now we have two set of (x, y) points, one in meter and one in the corresponding pixels. We found the slope and y intercept for both x and y direction, and wrote a simple linear conversion function. finally, we converted the bottles’ centers from pixel to meter with this function and stored them in a text file. </p>
-              <p> From what we saw in the end result, this simple linear conversion was very accurate in most cases. It was most accurate when the bottle was close to the center of the field (where the camera was placed) and less accurate further away. This was mostly because the wooden field was not flat, and the image of the camera was also not a perfect linear projection. A way to improve its accuracy was to sample more points and make a 2D interpolation using methods such as basis spline. Due to time limit, we settled with linear conversion.</p>
-              <h3>Inverse Kinematics</h3>
+              <h3>Open Loop Control</h3>
+              <p> In the Command thread, we implemented an open loop control to the system. If we want to control one motor, we just need to set two things, Motor_Num and Motor_Status. Motor_Num corresponds to which motor we want to control. Motor_Status corresponds to whether we want it to move in or move out or stay idle.</p>
+              <p> For example: </p>
+              <div class="center">
+                <p><b></b>                 
+                            Motor_Num = MOTOR3; <br> 
+                            Motor_Status = MOVE_IN; <br> 
+                            for (i=0;i<26;i++) PT_YIELD_TIME_msec(1000); <br> 
+                            Motor_Num = IDLE; <br> 
+                            Motor_Status = IDLE; <br> 
+                            </p>
+              </div>   
+            
+              <p> Using this code, we set the current active motor to Motor 3, and set its status to move in. Since the motor thread keeps checking Motor_Num and Motor_Status, it would start to run the corresponding code.  </p>
+              <p> The for-loop is used to control how long we want the motor to run. Because we set the Motor_Num and Motor_Status to IDLE, the motor would directly stop after the for-loop. In this case, Motor 3 would begin to move in, which means the platform would go down, for 26 seconds.  </p>
+              <p> Using open loop control, we can just try different loop numbers to make the platform or the frames to stop at certain positions. Since our system is very rigid and stable, open loop control is enough to make it function properly. </p>
+            
+              <h3>Button Control</h3>
+              <p> </p>
+            
+            
               <figure>
                 <img src="img/DH_matrix.jpg" alt="DH_matrix" width="450" height="450">
                 <figcaption>Figure 7: DH_matrix. </figcaption>
