@@ -6,6 +6,12 @@
     <link rel="stylesheet" href="css/bulma.min.css">
     <link rel="stylesheet" href="css/page.css">
     <style>
+    .center {
+      margin: auto;
+      width: 60%;
+      border: 3px solid #73AD21;
+      padding: 10px;
+    }
     </style>
   </head>
   <body>
@@ -148,7 +154,8 @@
               <p> There are two kinds of stepper motor in our project. Since they use different kinds of stepper motor driver, the codes to drive them are different. </p>
               <p> For the stepper motors using ULN2003 driver board, we need to directly send pulse wave to the four phases of the motor. The code is shown below. </p>
               <div class="center">
-                <p><b>Note: </b>                 writePE(GPIOZ, 0x01);
+                <p><b></b>                 
+                            writePE(GPIOZ, 0x01);
                             PT_YIELD_TIME_msec(2);
                             writePE(GPIOZ, 0x02);
                             PT_YIELD_TIME_msec(2);
